@@ -78,9 +78,9 @@ const CalculatorStepUpSIP = () => {
             </div>
             <input
               type="range"
-              min="500"
+              min="100"
               max="100000"
-              step="500"
+              step="100"
               value={Number(monthlyInvestment) > 100000 ? 100000 : Number(monthlyInvestment)}
               onChange={(e) => setMonthlyInvestment(Number(e.target.value))}
               className="w-full h-2 bg-zinc-100 rounded-lg appearance-none cursor-pointer accent-emerald-600"

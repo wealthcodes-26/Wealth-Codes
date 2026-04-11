@@ -33,6 +33,28 @@ export default function App() {
   const [isDiversificationModalOpen, setIsDiversificationModalOpen] = useState(false);
   const [isStrategicDecisionModalOpen, setIsStrategicDecisionModalOpen] = useState(false);
   const [isChatbotModalOpen, setIsChatbotModalOpen] = useState(false);
+  const [realTimeRate, setRealTimeRate] = useState<number | null>(null);
+  const [isLoadingRate, setIsLoadingRate] = useState(false);
+
+  React.useEffect(() => {
+    if (activeTab === 'inflation' && !realTimeRate) {
+      const fetchInflation = async () => {
+        setIsLoadingRate(true);
+        try {
+          const response = await fetch('/api/inflation');
+          const data = await response.json();
+          if (data.rate) {
+            setRealTimeRate(data.rate);
+          }
+        } catch (error) {
+          console.error('Failed to fetch inflation rate:', error);
+        } finally {
+          setIsLoadingRate(false);
+        }
+      };
+      fetchInflation();
+    }
+  }, [activeTab, realTimeRate]);
 
   const handleNavigate = (page: 'home' | 'calculators', section?: string) => {
     setCurrentPage(page);
@@ -143,7 +165,11 @@ export default function App() {
                   </div>
                 </div>
 
-                <CalculatorInfo activeTab={activeTab} />
+                <CalculatorInfo 
+                  activeTab={activeTab} 
+                  realTimeRate={realTimeRate}
+                  isLoadingRate={isLoadingRate}
+                />
 
                 <AnimatePresence mode="wait">
                   <motion.div
@@ -159,7 +185,12 @@ export default function App() {
                     {activeTab === 'hybrid' && <CalculatorHybrid />}
                     {activeTab === 'swp' && <CalculatorSWP />}
                     {activeTab === 'presentvalue' && <CalculatorPresentValue />}
-                    {activeTab === 'inflation' && <CalculatorInflation />}
+                    {activeTab === 'inflation' && (
+                      <CalculatorInflation 
+                        realTimeRate={realTimeRate} 
+                        isLoadingRate={isLoadingRate} 
+                      />
+                    )}
                   </motion.div>
                 </AnimatePresence>
               </div>

@@ -3,29 +3,25 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, AreaChart, Area, XAx
 import { formatCurrency } from '../lib/utils';
 import { TrendingUp, Info } from 'lucide-react';
 
-const CalculatorInflation = () => {
+interface CalculatorInflationProps {
+  realTimeRate: number | null;
+  isLoadingRate: boolean;
+}
+
+const CalculatorInflation = ({ realTimeRate, isLoadingRate }: CalculatorInflationProps) => {
   const [currentAmount, setCurrentAmount] = useState<number | string>(100000);
   const [inflationRate, setInflationRate] = useState<number | string>(6);
   const [timePeriod, setTimePeriod] = useState<number | string>(10);
-  const [realTimeRate, setRealTimeRate] = useState<number | null>(null);
-  const [isLoadingRate, setIsLoadingRate] = useState(false);
 
   useEffect(() => {
-    const fetchInflation = async () => {
-      setIsLoadingRate(true);
-      try {
-        const response = await fetch('/api/inflation');
-        const data = await response.json();
-        if (data.rate) {
-          setRealTimeRate(data.rate);
-        }
-      } catch (error) {
-        console.error('Failed to fetch inflation rate:', error);
-      } finally {
-        setIsLoadingRate(false);
+    const handleApplyRate = (e: any) => {
+      if (e.detail) {
+        setInflationRate(e.detail);
       }
     };
-    fetchInflation();
+
+    window.addEventListener('apply-inflation-rate', handleApplyRate);
+    return () => window.removeEventListener('apply-inflation-rate', handleApplyRate);
   }, []);
 
   const results = useMemo(() => {
@@ -68,34 +64,6 @@ const CalculatorInflation = () => {
 
   return (
     <div className="bg-white rounded-3xl p-5 md:p-8 border border-zinc-100 shadow-sm relative overflow-hidden">
-      {/* Real-time Inflation Rate Badge */}
-      <div className="absolute top-0 right-0 mt-4 mr-4 z-10">
-        <div className="flex items-center gap-2 px-3 py-1.5 bg-emerald-50/80 backdrop-blur-sm border border-emerald-100 rounded-full shadow-sm">
-          <div className={`w-2 h-2 rounded-full ${isLoadingRate ? 'bg-zinc-300 animate-pulse' : 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]'}`}></div>
-          <div className="flex flex-col">
-            <span className="text-[9px] uppercase tracking-wider text-emerald-700 font-bold leading-none mb-0.5">Live Inflation Rate</span>
-            <div className="flex items-center gap-1.5">
-              <span className="text-sm font-black text-zinc-900 leading-none">{realTimeRate ? `${realTimeRate}%` : '...'}</span>
-              {realTimeRate && (
-                <button 
-                  onClick={() => setInflationRate(realTimeRate)}
-                  className="p-0.5 hover:bg-emerald-100 rounded transition-colors text-emerald-600"
-                  title="Apply Live Rate"
-                >
-                  <TrendingUp className="w-3 h-3" />
-                </button>
-              )}
-            </div>
-          </div>
-          <div className="group relative ml-1">
-            <Info className="w-3 h-3 text-emerald-400 cursor-help" />
-            <div className="absolute top-full right-0 mt-2 w-56 p-2 bg-zinc-900 text-white text-[10px] rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-20 shadow-xl">
-              This rate is fetched in real-time from official data sources. Note: The real inflation might be high because it includes food inflation, healthcare inflation, etc.
-            </div>
-          </div>
-        </div>
-      </div>
-
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
         <div className="space-y-6 md:space-y-8">
           <div>

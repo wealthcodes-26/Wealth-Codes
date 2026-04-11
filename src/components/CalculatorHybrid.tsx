@@ -127,7 +127,7 @@ const CalculatorHybrid = () => {
               type="range"
               min="0"
               max="100000"
-              step="500"
+              step="100"
               value={Number(monthlySIP) > 100000 ? 100000 : Number(monthlySIP)}
               onChange={(e) => setMonthlySIP(Number(e.target.value))}
               className="w-full h-2 bg-zinc-100 rounded-lg appearance-none cursor-pointer accent-emerald-600"

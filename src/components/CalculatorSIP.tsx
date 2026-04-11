@@ -65,7 +65,7 @@ const CalculatorSIP = () => {
                   }}
                   onFocus={(e) => e.target.select()}
                   onBlur={() => {
-                    if (monthlyInvestment === "") setMonthlyInvestment(500);
+                    if (monthlyInvestment === "") setMonthlyInvestment(100);
                   }}
                   className="w-28 md:w-32 pl-7 pr-3 py-1 bg-emerald-50 border border-emerald-100 rounded-lg text-emerald-600 font-bold outline-none focus:ring-2 focus:ring-emerald-200 transition-all text-sm md:text-base"
                 />
@@ -73,9 +73,9 @@ const CalculatorSIP = () => {
             </div>
             <input
               type="range"
-              min="500"
+              min="100"
               max="100000"
-              step="500"
+              step="100"
               value={Number(monthlyInvestment) > 100000 ? 100000 : Number(monthlyInvestment)}
               onChange={(e) => setMonthlyInvestment(Number(e.target.value))}
               className="w-full h-2 bg-zinc-100 rounded-lg appearance-none cursor-pointer accent-emerald-600"

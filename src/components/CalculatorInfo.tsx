@@ -1,11 +1,18 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { TrendingUp, Info } from 'lucide-react';
 
 interface InfoSection {
   title: string;
   description: string;
   advantages: { title: string; desc: string }[];
   considerations: { title: string; desc: string }[];
+}
+
+interface CalculatorInfoProps {
+  activeTab: string;
+  realTimeRate?: number | null;
+  isLoadingRate?: boolean;
 }
 
 const calculatorInfo: Record<string, InfoSection> = {
@@ -109,8 +116,14 @@ const calculatorInfo: Record<string, InfoSection> = {
   }
 };
 
-const CalculatorInfo = ({ activeTab }: { activeTab: string }) => {
+const CalculatorInfo = ({ activeTab, realTimeRate, isLoadingRate }: CalculatorInfoProps) => {
   const info = calculatorInfo[activeTab];
+
+  const handleApplyRate = () => {
+    if (realTimeRate) {
+      window.dispatchEvent(new CustomEvent('apply-inflation-rate', { detail: realTimeRate }));
+    }
+  };
 
   if (!info) return null;
 
@@ -124,6 +137,36 @@ const CalculatorInfo = ({ activeTab }: { activeTab: string }) => {
         transition={{ duration: 0.3 }}
         className="mb-8 md:mb-12"
       >
+        {activeTab === 'inflation' && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-4 px-2">
+            <div className="md:col-start-2">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-50/80 backdrop-blur-sm border border-emerald-100 rounded-full shadow-sm">
+                <div className={`w-2 h-2 rounded-full ${isLoadingRate ? 'bg-zinc-300 animate-pulse' : 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]'}`}></div>
+                <div className="flex flex-col">
+                  <span className="text-[9px] uppercase tracking-wider text-emerald-700 font-bold leading-none mb-0.5">Live Inflation Rate</span>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-sm font-black text-zinc-900 leading-none">{realTimeRate ? `${realTimeRate}%` : '...'}</span>
+                    {realTimeRate && (
+                      <button 
+                        onClick={handleApplyRate}
+                        className="p-0.5 hover:bg-emerald-100 rounded transition-colors text-emerald-600 cursor-pointer"
+                        title="Apply Live Rate"
+                      >
+                        <TrendingUp className="w-3 h-3" />
+                      </button>
+                    )}
+                  </div>
+                </div>
+                <div className="group relative ml-1">
+                  <Info className="w-3 h-3 text-emerald-400 cursor-help" />
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-56 p-2 bg-zinc-900 text-white text-[10px] rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-20 shadow-xl">
+                    This rate is fetched in real-time from official data sources. Note: The real inflation might be high because it includes food inflation, healthcare inflation, etc.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 p-6 md:p-8 bg-white rounded-3xl border border-zinc-100 shadow-sm">
           <div>
             <h3 className="text-lg font-bold text-zinc-900 mb-4">{info.title}</h3>
