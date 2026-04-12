@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { X, Send, Bot, User, Loader2, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { GoogleGenAI } from "@google/genai";
 import Markdown from 'react-markdown';
 import { cn } from '../lib/utils';
 
@@ -37,18 +36,26 @@ const ChatbotModal = ({ isOpen, onClose }: ChatbotModalProps) => {
     setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
     setIsLoading(true);
 
-    try {
-      const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-      const response = await ai.models.generateContent({
-        model: "gemini-3-flash-preview",
-        contents: [...messages.map(m => ({ role: m.role === 'user' ? 'user' : 'model', parts: [{ text: m.content }] })), { role: 'user', parts: [{ text: userMessage }] }],
-        config: {
-          systemInstruction: "You are a highly knowledgeable financial expert specializing in Indian Mutual Funds. Your tone is professional, helpful, and easy to understand. You provide clear explanations for terms like SIP, STP, SWP, Index Funds, Large Cap, Mid Cap, Small Cap, and more. Always encourage disciplined investing and mention that mutual fund investments are subject to market risks.",
-        },
-      });
+   try {
+  const response = await fetch("/api/chat", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ message: userMessage }),
+  });
 
-      const botResponse = response.text || "I'm sorry, I couldn't process that. Could you please try again?";
-      setMessages(prev => [...prev, { role: 'bot', content: botResponse }]);
+  const data = await response.json();
+
+  const botResponse =
+    data.reply || "No response from AI";
+
+  setMessages(prev => [
+    ...prev,
+    { role: "bot", content: botResponse }
+  ]);
+
+     
     } catch (error) {
       console.error("AI Chat Error:", error);
       setMessages(prev => [...prev, { role: 'bot', content: "I'm having a bit of trouble connecting right now. Please try again in a moment." }]);
