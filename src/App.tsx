@@ -303,7 +303,7 @@ export default function App() {
                   <Instagram className="w-5 h-5" />
                 </a>
                 <a 
-                  href="https://www.instagram.com/_wealthcodes_?igsh=am5nZGR1b2dmbnJw" 
+                  href="https://www.facebook.com/share/1AApWyTLAj/" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-zinc-800 text-zinc-400 hover:bg-emerald-600 hover:text-white transition-all duration-300 shadow-lg"
