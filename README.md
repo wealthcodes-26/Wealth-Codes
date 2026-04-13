@@ -28,11 +28,16 @@ This project is pre-configured for seamless deployment on Vercel.
    - Log in to [Vercel](https://vercel.com).
    - Click **"Add New..."** -> **"Project"**.
    - Import your GitHub repository.
-3. **Configure Settings**:
+3. **Configure Environment Variables**:
+   - In the Vercel dashboard, go to **Settings** -> **Environment Variables**.
+   - Add a new variable:
+     - **Key**: `GEMINI_API_KEY`
+     - **Value**: Your Google Gemini API Key (get it from [Google AI Studio](https://aistudio.google.com/app/apikey)).
+4. **Configure Build Settings**:
    - Vercel will automatically detect the Vite framework.
    - **Build Command**: `npm run build`
    - **Output Directory**: `dist`
-4. **Deploy**: Click **"Deploy"**.
+5. **Deploy**: Click **"Deploy"**.
 
 ## Local Development
 
