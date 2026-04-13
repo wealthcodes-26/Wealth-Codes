@@ -36,26 +36,26 @@ const ChatbotModal = ({ isOpen, onClose }: ChatbotModalProps) => {
     setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
     setIsLoading(true);
 
-   try {
-  const response = await fetch("/api/chat", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ message: userMessage }),
-  });
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          messages: messages.slice(1), // Exclude the initial bot greeting
+          userMessage: userMessage,
+        }),
+      });
 
-  const data = await response.json();
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to get response');
+      }
 
-  const botResponse =
-    data.reply || "No response from AI";
-
-  setMessages(prev => [
-    ...prev,
-    { role: "bot", content: botResponse }
-  ]);
-
-     
+      const data = await response.json();
+      const botResponse = data.text || "I'm sorry, I couldn't process that. Could you please try again?";
+      setMessages(prev => [...prev, { role: 'bot', content: botResponse }]);
     } catch (error) {
       console.error("AI Chat Error:", error);
       setMessages(prev => [...prev, { role: 'bot', content: "I'm having a bit of trouble connecting right now. Please try again in a moment." }]);
