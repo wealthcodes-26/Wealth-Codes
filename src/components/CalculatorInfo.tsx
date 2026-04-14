@@ -119,6 +119,22 @@ const calculatorInfo: Record<string, InfoSection> = {
 const CalculatorInfo = ({ activeTab, realTimeRate, isLoadingRate }: CalculatorInfoProps) => {
   const info = calculatorInfo[activeTab];
   const [showTooltip, setShowTooltip] = React.useState(false);
+  const tooltipRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (tooltipRef.current && !tooltipRef.current.contains(event.target as Node)) {
+        setShowTooltip(false);
+      }
+    };
+
+    if (showTooltip) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showTooltip]);
 
   const handleApplyRate = () => {
     if (realTimeRate) {
@@ -141,31 +157,35 @@ const CalculatorInfo = ({ activeTab, realTimeRate, isLoadingRate }: CalculatorIn
         {activeTab === 'inflation' && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-4 px-2">
             <div className="md:col-start-2">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-50/80 backdrop-blur-sm border border-emerald-100 rounded-full shadow-sm">
-                <div className={`w-2 h-2 rounded-full ${isLoadingRate ? 'bg-zinc-300 animate-pulse' : 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]'}`}></div>
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-50/80 backdrop-blur-sm border border-emerald-100 rounded-full shadow-sm">
+                <div className={`w-2.5 h-2.5 rounded-full ${isLoadingRate ? 'bg-zinc-300 animate-pulse' : 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]'}`}></div>
                 <div className="flex flex-col">
-                  <span className="text-[9px] uppercase tracking-wider text-emerald-700 font-bold leading-none mb-0.5">Live Inflation Rate</span>
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-sm font-black text-zinc-900 leading-none">{realTimeRate ? `${realTimeRate}%` : '...'}</span>
+                  <span className="text-[10px] uppercase tracking-wider text-emerald-700 font-bold leading-none mb-1">Live Inflation Rate</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-base font-black text-zinc-900 leading-none">{realTimeRate ? `${realTimeRate}%` : '...'}</span>
                     {realTimeRate && (
                       <button 
                         onClick={handleApplyRate}
-                        className="p-0.5 hover:bg-emerald-100 rounded transition-colors text-emerald-600 cursor-pointer"
+                        className="p-1 hover:bg-emerald-100 rounded-lg transition-colors text-emerald-600 cursor-pointer flex items-center justify-center"
                         title="Apply Live Rate"
                       >
-                        <TrendingUp className="w-3 h-3" />
+                        <TrendingUp className="w-4 h-4" />
                       </button>
                     )}
                   </div>
                 </div>
-                <div className="relative ml-1">
+                <div className="relative ml-1" ref={tooltipRef}>
                   <button 
-                    onClick={() => setShowTooltip(!showTooltip)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setShowTooltip(!showTooltip);
+                    }}
                     onMouseEnter={() => setShowTooltip(true)}
                     onMouseLeave={() => setShowTooltip(false)}
-                    className="flex items-center justify-center p-0.5 rounded-full hover:bg-emerald-100 transition-colors cursor-help outline-none"
+                    className="flex items-center justify-center p-2 -m-1 rounded-full hover:bg-emerald-100 transition-colors cursor-help outline-none"
+                    aria-label="Inflation Info"
                   >
-                    <Info className="w-3.5 h-3.5 text-emerald-400" />
+                    <Info className="w-4 h-4 text-emerald-400" />
                   </button>
                   <AnimatePresence>
                     {showTooltip && (
@@ -173,11 +193,11 @@ const CalculatorInfo = ({ activeTab, realTimeRate, isLoadingRate }: CalculatorIn
                         initial={{ opacity: 0, scale: 0.95, y: 10 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: 10 }}
-                        className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-56 p-3 bg-zinc-900 text-white text-[10px] rounded-xl z-50 shadow-2xl pointer-events-none md:pointer-events-auto"
+                        className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-64 p-4 bg-zinc-900 text-white text-[11px] rounded-2xl z-50 shadow-2xl"
                       >
-                        <div className="relative">
+                        <div className="relative leading-relaxed">
                           This rate is fetched in real-time from official data sources (MOSPI/RBI). Note: Real-world inflation may vary based on specific categories like food or healthcare.
-                          <div className="absolute top-full left-1/2 -translate-x-1/2 border-8 border-transparent border-t-zinc-900" />
+                          <div className="absolute top-full left-1/2 -translate-x-1/2 border-[10px] border-transparent border-t-zinc-900 mt-0.5" />
                         </div>
                       </motion.div>
                     )}
