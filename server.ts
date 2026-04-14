@@ -94,12 +94,12 @@ async function startServer() {
       if (inflationRate) {
         res.json({ rate: inflationRate, source: "RBI/MOSPI", timestamp: new Date().toISOString() });
       } else {
-        // Default fallback if all else fails (current known rate)
-        res.json({ rate: 3.21, source: "Default (Feb 2026)", timestamp: new Date().toISOString() });
+        // Default fallback if all else fails (current known rate as of March 2026)
+        res.json({ rate: 3.4, source: "Default (March 2026)", timestamp: new Date().toISOString() });
       }
     } catch (error) {
       console.error("Error fetching inflation data:", error);
-      res.json({ rate: 3.21, source: "Fallback", timestamp: new Date().toISOString() });
+      res.json({ rate: 3.4, source: "Fallback", timestamp: new Date().toISOString() });
     }
   });
 
