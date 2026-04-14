@@ -118,6 +118,7 @@ const calculatorInfo: Record<string, InfoSection> = {
 
 const CalculatorInfo = ({ activeTab, realTimeRate, isLoadingRate }: CalculatorInfoProps) => {
   const info = calculatorInfo[activeTab];
+  const [showTooltip, setShowTooltip] = React.useState(false);
 
   const handleApplyRate = () => {
     if (realTimeRate) {
@@ -157,11 +158,30 @@ const CalculatorInfo = ({ activeTab, realTimeRate, isLoadingRate }: CalculatorIn
                     )}
                   </div>
                 </div>
-                <div className="group relative ml-1">
-                  <Info className="w-3 h-3 text-emerald-400 cursor-help" />
-                  <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-56 p-2 bg-zinc-900 text-white text-[10px] rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-20 shadow-xl">
-                    This rate is fetched in real-time from official data sources. Note: The real inflation might be high because it includes food inflation, healthcare inflation, etc.
-                  </div>
+                <div className="relative ml-1">
+                  <button 
+                    onClick={() => setShowTooltip(!showTooltip)}
+                    onMouseEnter={() => setShowTooltip(true)}
+                    onMouseLeave={() => setShowTooltip(false)}
+                    className="flex items-center justify-center p-0.5 rounded-full hover:bg-emerald-100 transition-colors cursor-help outline-none"
+                  >
+                    <Info className="w-3.5 h-3.5 text-emerald-400" />
+                  </button>
+                  <AnimatePresence>
+                    {showTooltip && (
+                      <motion.div 
+                        initial={{ opacity: 0, scale: 0.95, y: 10 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.95, y: 10 }}
+                        className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-56 p-3 bg-zinc-900 text-white text-[10px] rounded-xl z-50 shadow-2xl pointer-events-none md:pointer-events-auto"
+                      >
+                        <div className="relative">
+                          This rate is fetched in real-time from official data sources (MOSPI/RBI). Note: Real-world inflation may vary based on specific categories like food or healthcare.
+                          <div className="absolute top-full left-1/2 -translate-x-1/2 border-8 border-transparent border-t-zinc-900" />
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
               </div>
             </div>
