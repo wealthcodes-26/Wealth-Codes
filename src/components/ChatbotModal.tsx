@@ -91,7 +91,7 @@ const ChatbotModal = ({ isOpen, onClose }: ChatbotModalProps) => {
                   <h2 className="font-bold leading-tight text-base sm:text-lg">WealthCodes AI</h2>
                   <div className="flex items-center gap-1.5">
                     <div className="w-1.5 h-1.5 rounded-full bg-emerald-300 animate-pulse" />
-                    <span className="text-[10px] text-emerald-100 uppercase tracking-wider font-semibold">Online</span>
+                    <span className="text-[10px] text-emerald-100 uppercase tracking-wider font-semibold">Offline</span>
                   </div>
                 </div>
               </div>
