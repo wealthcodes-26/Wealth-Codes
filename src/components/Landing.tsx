@@ -5,11 +5,13 @@ import { Logo } from './Logo';
 const Header = ({ 
   onBookConsultation, 
   onOpenChat, 
+  onOpenPartners,
   onNavigate,
   currentPage 
 }: { 
   onBookConsultation: () => void; 
   onOpenChat: () => void;
+  onOpenPartners: () => void;
   onNavigate: (page: 'home' | 'calculators', section?: string) => void;
   currentPage: 'home' | 'calculators';
 }) => {
@@ -53,6 +55,12 @@ const Header = ({
               About
             </button>
             <button 
+              onClick={onOpenPartners}
+              className="text-sm font-medium text-zinc-600 hover:text-emerald-600 transition-colors cursor-pointer"
+            >
+              Our Partners
+            </button>
+            <button 
               onClick={onOpenChat}
               className="text-sm font-medium text-emerald-600 hover:text-emerald-700 transition-colors flex items-center gap-1.5 cursor-pointer"
             >
@@ -66,7 +74,7 @@ const Header = ({
               onClick={onBookConsultation}
               className="bg-zinc-900 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-zinc-800 transition-all cursor-pointer"
             >
-              Get Advisory
+              Book a Free Consultation
             </button>
           </nav>
 
@@ -103,6 +111,15 @@ const Header = ({
           </button>
           <button 
             onClick={() => {
+              onOpenPartners();
+              setIsMenuOpen(false);
+            }}
+            className="block w-full text-left px-4 py-2 rounded-xl text-sm font-medium text-zinc-600"
+          >
+            Our Partners
+          </button>
+          <button 
+            onClick={() => {
               onOpenChat();
               setIsMenuOpen(false);
             }}
@@ -117,7 +134,7 @@ const Header = ({
             }}
             className="block w-full text-center bg-zinc-900 text-white py-3 rounded-xl text-sm font-medium"
           >
-            Get Advisory
+            Book a Free Consultation
           </button>
         </div>
       )}
@@ -146,7 +163,7 @@ const Hero = ({ onBookConsultation, onNavigate }: { onBookConsultation: () => vo
           onClick={onBookConsultation}
           className="w-full sm:w-auto bg-zinc-900 text-white px-8 py-4 rounded-full font-semibold hover:bg-zinc-800 transition-all cursor-pointer"
         >
-          Book a Consultation
+          Book a Free Consultation
         </button>
       </div>
     </div>

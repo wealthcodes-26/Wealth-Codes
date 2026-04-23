@@ -20,6 +20,7 @@ import CustomMFPortfolioModal from './components/CustomMFPortfolioModal';
 import DiversificationModal from './components/DiversificationModal';
 import StrategicDecisionModal from './components/StrategicDecisionModal';
 import ChatbotModal from './components/ChatbotModal';
+import PartnersModal from './components/PartnersModal';
 import { cn } from './lib/utils';
 import { motion, AnimatePresence } from 'motion/react';
 import { Logo } from './components/Logo';
@@ -33,6 +34,7 @@ export default function App() {
   const [isDiversificationModalOpen, setIsDiversificationModalOpen] = useState(false);
   const [isStrategicDecisionModalOpen, setIsStrategicDecisionModalOpen] = useState(false);
   const [isChatbotModalOpen, setIsChatbotModalOpen] = useState(false);
+  const [isPartnersModalOpen, setIsPartnersModalOpen] = useState(false);
   const [realTimeRate, setRealTimeRate] = useState<number | null>(null);
   const [isLoadingRate, setIsLoadingRate] = useState(false);
 
@@ -77,6 +79,7 @@ export default function App() {
       <Header 
         onBookConsultation={() => setIsModalOpen(true)} 
         onOpenChat={() => setIsChatbotModalOpen(true)}
+        onOpenPartners={() => setIsPartnersModalOpen(true)}
         onNavigate={handleNavigate}
         currentPage={currentPage}
       />
@@ -231,6 +234,11 @@ export default function App() {
       <ChatbotModal 
         isOpen={isChatbotModalOpen} 
         onClose={() => setIsChatbotModalOpen(false)} 
+      />
+
+      <PartnersModal 
+        isOpen={isPartnersModalOpen} 
+        onClose={() => setIsPartnersModalOpen(false)} 
       />
 
       <footer className="bg-zinc-900 text-white py-12 md:py-20">

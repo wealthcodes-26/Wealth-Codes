@@ -82,7 +82,7 @@ const GoalPlanningModal = ({ isOpen, onClose, onBookConsultation }: GoalPlanning
                     }}
                     className="w-full bg-emerald-600 text-white py-4 rounded-xl font-bold hover:bg-emerald-700 transition-all shadow-lg shadow-emerald-200"
                   >
-                    Book Consultation
+                    Book a Free Consultation
                   </button>
                 </div>
               </div>

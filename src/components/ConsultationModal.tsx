@@ -151,7 +151,7 @@ const ConsultationModal = ({ isOpen, onClose }: ConsultationModalProps) => {
 
             <div className="p-6 sm:p-10 overflow-y-auto custom-scrollbar">
               <div className="mb-8">
-                <h3 className="text-2xl sm:text-3xl font-bold text-zinc-900 mb-2">Book a Consultation</h3>
+                <h3 className="text-2xl sm:text-3xl font-bold text-zinc-900 mb-2">Book a Free Consultation</h3>
                 <p className="text-zinc-600 text-sm sm:text-base">Fill in your details and we'll get back to you with a personalized plan.</p>
               </div>
 
