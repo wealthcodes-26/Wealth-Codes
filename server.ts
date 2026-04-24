@@ -3,45 +3,11 @@ import { createServer as createViteServer } from "vite";
 import path from "path";
 import axios from "axios";
 import * as cheerio from "cheerio";
-import { GoogleGenAI } from "@google/genai";
 
 async function startServer() {
   const app = express();
   app.use(express.json());
   const PORT = 3000;
-
-  // API route for AI Chat
-  app.post("/api/chat", async (req, res) => {
-    const { messages, userMessage } = req.body;
-    const apiKey = process.env.GEMINI_API_KEY;
-
-    if (!apiKey) {
-      return res.status(500).json({ error: "GEMINI_API_KEY is not configured" });
-    }
-
-    try {
-      const ai = new GoogleGenAI({ apiKey });
-      const response = await ai.models.generateContent({
-        model: "gemini-1.5-flash",
-        contents: [
-          ...messages.map((m: any) => ({
-            role: m.role === 'user' ? 'user' : 'model',
-            parts: [{ text: m.content }],
-          })),
-          { role: 'user', parts: [{ text: userMessage }] }
-        ],
-        config: {
-          systemInstruction: "You are a highly knowledgeable financial expert specializing in Indian Mutual Funds. Your tone is professional, helpful, and easy to understand. You provide clear explanations for terms like SIP, STP, SWP, Index Funds, Large Cap, Mid Cap, Small Cap, and more. Always encourage disciplined investing and mention that mutual fund investments are subject to market risks.",
-        },
-      });
-
-      const text = response.text || "I'm sorry, I couldn't process that.";
-      res.json({ text });
-    } catch (error) {
-      console.error("Local AI Chat Error:", error);
-      res.status(500).json({ error: "Failed to generate response" });
-    }
-  });
 
   // API route for inflation data
   app.get("/api/inflation", async (req, res) => {
