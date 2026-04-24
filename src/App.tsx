@@ -19,7 +19,6 @@ import GoalPlanningModal from './components/GoalPlanningModal';
 import CustomMFPortfolioModal from './components/CustomMFPortfolioModal';
 import DiversificationModal from './components/DiversificationModal';
 import StrategicDecisionModal from './components/StrategicDecisionModal';
-import ChatbotModal from './components/ChatbotModal';
 import PartnersModal from './components/PartnersModal';
 import { cn } from './lib/utils';
 import { motion, AnimatePresence } from 'motion/react';
@@ -33,7 +32,6 @@ export default function App() {
   const [isCustomMFModalOpen, setIsCustomMFModalOpen] = useState(false);
   const [isDiversificationModalOpen, setIsDiversificationModalOpen] = useState(false);
   const [isStrategicDecisionModalOpen, setIsStrategicDecisionModalOpen] = useState(false);
-  const [isChatbotModalOpen, setIsChatbotModalOpen] = useState(false);
   const [isPartnersModalOpen, setIsPartnersModalOpen] = useState(false);
   const [realTimeRate, setRealTimeRate] = useState<number | null>(null);
   const [isLoadingRate, setIsLoadingRate] = useState(false);
@@ -78,7 +76,6 @@ export default function App() {
     <div className="min-h-screen bg-white font-sans text-zinc-900">
       <Header 
         onBookConsultation={() => setIsModalOpen(true)} 
-        onOpenChat={() => setIsChatbotModalOpen(true)}
         onOpenPartners={() => setIsPartnersModalOpen(true)}
         onNavigate={handleNavigate}
         currentPage={currentPage}
@@ -108,7 +105,8 @@ export default function App() {
                     {[
                       { title: "Personalized Advice", desc: "No two investors are the same. We tailor our advice to your unique financial situation." },
                       { title: "Transparency", desc: "Full disclosure of all costs and potential risks involved in your investments." },
-                      { title: "Regular Reviews", desc: "We don't just invest and forget. We monitor and rebalance your portfolio as needed." }
+                      { title: "Regular Reviews", desc: "We don't just invest and forget. We monitor and rebalance your portfolio as needed." },
+                      { title: "Proper Guidance", desc: "In today's generation everyone invests in mutual fund for long term wealth, many investors pick random mutual funds on the basis of past performance or star ratings, they may pick wrong funds. We can help them to pick fund." }
                     ].map((item, i) => (
                       <div key={i} className="flex gap-4 md:gap-6 items-start p-5 md:p-6 rounded-2xl bg-zinc-50 border border-zinc-100">
                         <div className="w-8 h-8 rounded-full bg-emerald-600 flex-shrink-0 flex items-center justify-center text-white text-sm font-bold shadow-lg shadow-emerald-100">
@@ -229,11 +227,6 @@ export default function App() {
         isOpen={isStrategicDecisionModalOpen} 
         onClose={() => setIsStrategicDecisionModalOpen(false)} 
         onBookConsultation={() => setIsModalOpen(true)}
-      />
-
-      <ChatbotModal 
-        isOpen={isChatbotModalOpen} 
-        onClose={() => setIsChatbotModalOpen(false)} 
       />
 
       <PartnersModal 

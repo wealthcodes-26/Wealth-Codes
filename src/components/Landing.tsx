@@ -4,13 +4,11 @@ import { Logo } from './Logo';
 
 const Header = ({ 
   onBookConsultation, 
-  onOpenChat, 
   onOpenPartners,
   onNavigate,
   currentPage 
 }: { 
   onBookConsultation: () => void; 
-  onOpenChat: () => void;
   onOpenPartners: () => void;
   onNavigate: (page: 'home' | 'calculators', section?: string) => void;
   currentPage: 'home' | 'calculators';
@@ -61,16 +59,6 @@ const Header = ({
               Our Partners
             </button>
             <button 
-              onClick={onOpenChat}
-              className="text-sm font-medium text-emerald-600 hover:text-emerald-700 transition-colors flex items-center gap-1.5 cursor-pointer"
-            >
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-              </span>
-              AI Chat
-            </button>
-            <button 
               onClick={onBookConsultation}
               className="bg-zinc-900 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-zinc-800 transition-all cursor-pointer"
             >
@@ -117,15 +105,6 @@ const Header = ({
             className="block w-full text-left px-4 py-2 rounded-xl text-sm font-medium text-zinc-600"
           >
             Our Partners
-          </button>
-          <button 
-            onClick={() => {
-              onOpenChat();
-              setIsMenuOpen(false);
-            }}
-            className="block w-full text-left px-4 py-2 rounded-xl text-sm font-medium text-emerald-600"
-          >
-            AI Chat
           </button>
           <button 
             onClick={() => {
